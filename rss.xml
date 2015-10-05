@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+        <title>Jekyll Bootstrap</title>
+        <description>Jekyll Bootstrap - Name Lastname</description>
+        <link>http://lionel-.github.io</link>
+        <atom:link href="http://lionel-.github.io/rss.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate>Tue, 06 Oct 2015 00:38:52 +0200</lastBuildDate>
+        <pubDate>Tue, 06 Oct 2015 00:38:52 +0200</pubDate>
+        <ttl>60</ttl>
+
+
+        <item>
+                <title>Starting a blog</title>
+                <description>&lt;p&gt;Hello, world. I am starting this blog mostly to share Emacs tricks and
+perhaps talk about some R projects of mine. As is often the case,
+this blog will serve as a way of keeping trace of how I solved a
+problem or where I found a solution.&lt;/p&gt;
+
+&lt;p&gt;Here’s the first one: if you start a blog and like clean and
+minimalist layouts and workflows, it’s probably best to ignore
+high-level wrappers like
+&lt;a href=&quot;http://jekyllbootstrap.com&quot;&gt;Jekyll Bootstrap&lt;/a&gt;. Just bite the bullet
+and learn pure Jekyll. I started with Jekyll Bootstrap but ended up
+removing all of it layer after layer. The only bit I still use is the
+rakefile to create new posts, but it is trivial stuff.&lt;/p&gt;
+
+&lt;p&gt;Also, I quickly gave up on the idea of having Github generate the
+pages. Most Jekyll plugins are not supported (such as generators of
+tag pages) and it’s easy enough to build the pages locally and push
+the html to your Github repository.&lt;/p&gt;
+
+&lt;!-- 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lisp&quot; data-lang=&quot;lisp&quot;&gt;&lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;defun&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;neat-R&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;interactive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inferior-R-args&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;--vanilla&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;         &lt;span class=&quot;nv&quot;&gt;ess-R-post-run-hook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-hook&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&amp;#39;ess-R-post-run-hook&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;               &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;                 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ess-send-input-silently&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;.libPaths(&amp;#39;~/Dropbox/Applications/R&amp;#39;)&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;                 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ess-send-input-silently&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;options(repos = c(CRAN = &amp;#39;http://cran.rstudio.com/&amp;#39;))&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+ --&gt;
+
+&lt;!-- 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; blog_dir &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;~/Dropbox/Projects/Blog/&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; fig_dir &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;assets/figures/&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`_post_path`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; fig_dir_full &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;blog_dir&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; fig_dir&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;file.exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fig_dir_full&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   &lt;span class=&quot;kp&quot;&gt;dir.create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fig_dir_full&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; knitr&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;render_jekyll&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;pygments&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; knitr&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;opts_knit&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;set&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   base.url &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   base.dir &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; blog_dir&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   width &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; knitr&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;opts_chunk&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;set&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   fig.path &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fig_dir&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   fig.width &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   fig.height &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   dev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;svg&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+ --&gt;
+</description>
+                <link>http://lionel-.github.io/2015/10/05/starting-a-blog</link>
+                <guid>http://lionel-.github.io/2015/10/05/starting-a-blog</guid>
+                <pubDate>Mon, 05 Oct 2015 00:00:00 +0200</pubDate>
+        </item>
+
+
+</channel>
+</rss>

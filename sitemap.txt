@@ -1,0 +1,12 @@
+
+http://lionel-.github.io/archive.html
+http://lionel-.github.io/atom.xml
+http://lionel-.github.io/categories.html
+http://lionel-.github.io/index.html
+http://lionel-.github.io/pages.html
+http://lionel-.github.io/rss.xml
+http://lionel-.github.io/sitemap.txt
+http://lionel-.github.io/tags.html
+http://lionel-.github.io/tags/jekyll.html
+
+http://lionel-.github.io/2015/10/05/starting-a-blog

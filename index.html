@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title></title>
+    
+    <meta name="author" content="Name Lastname">
+
+    <!-- <\!-- Enable responsive viewport -\-> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    
+    <!-- Custom styles -->
+    <link href="/assets/themes/lean/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+  </head>
+
+  <body>
+    <div id="wrap">
+      <div id="head">
+        <div id="header-content">
+          <a href="/">
+            <img src="/assets/tryphon.png" id="tryphon">
+          </a>
+          <div id="about">
+            <h1 class="default">(routines ...)</h1>
+            <p style="color: white" class="about-sub-title default">
+              <a href="/archive.html">Archives</a>;&nbsp
+              <a href="http://github.com/lionel-/">Github</a>;&nbsp
+              <a href="https://twitter.com/_lionelhenry">Twitter</a>;&nbsp
+              <a href="mailto:lionel.hry">Gmail</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        
+
+
+
+<div class="container">
+  <div id="box">
+    
+      
+      
+      
+<h1>Starting a blog </h1>
+<h4><span>05 October 2015</span></h4>
+
+<div id="content">
+  <p>Hello, world. I am starting this blog mostly to share Emacs tricks and
+perhaps talk about some R projects of mine. As is often the case,
+this blog will serve as a way of keeping trace of how I solved a
+problem or where I found a solution.</p>
+
+<p>Here’s the first one: if you start a blog and like clean and
+minimalist layouts and workflows, it’s probably best to ignore
+high-level wrappers like
+<a href="http://jekyllbootstrap.com">Jekyll Bootstrap</a>. Just bite the bullet
+and learn pure Jekyll. I started with Jekyll Bootstrap but ended up
+removing all of it layer after layer. The only bit I still use is the
+rakefile to create new posts, but it is trivial stuff.</p>
+
+<p>Also, I quickly gave up on the idea of having Github generate the
+pages. Most Jekyll plugins are not supported (such as generators of
+tag pages) and it’s easy enough to build the pages locally and push
+the html to your Github repository.</p>
+
+<!-- 
+<div class="highlight"><pre><code class="language-lisp" data-lang="lisp"><span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span> <span class="p">(</span><span class="nb">defun</span> <span class="nv">neat-R</span> <span class="p">()</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>   <span class="p">(</span><span class="nv">interactive</span><span class="p">)</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">inferior-R-args</span> <span class="s">&quot;--vanilla&quot;</span><span class="p">)</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>         <span class="nv">ess-R-post-run-hook</span><span class="p">)</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>     <span class="p">(</span><span class="nv">add-hook</span> <span class="ss">&#39;ess-R-post-run-hook</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>               <span class="p">(</span><span class="k">lambda</span> <span class="p">()</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>                 <span class="p">(</span><span class="nv">ess-send-input-silently</span> <span class="s">&quot;.libPaths(&#39;~/Dropbox/Applications/R&#39;)&quot;</span><span class="p">)</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>                 <span class="p">(</span><span class="nv">ess-send-input-silently</span> <span class="s">&quot;options(repos = c(CRAN = &#39;http://cran.rstudio.com/&#39;))&quot;</span><span class="p">)))</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span>     <span class="p">(</span><span class="nv">R</span><span class="p">)))</span> <span class="nv">--&gt;</span>
+<span class="nv">&lt;!--</span></code></pre></div>
+ -->
+
+<!-- 
+<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="o">--&gt;</span>
+<span class="o">&lt;!--</span> blog_dir <span class="o">&lt;-</span> <span class="s">&quot;~/Dropbox/Projects/Blog/&quot;</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span> fig_dir <span class="o">&lt;-</span> <span class="kp">paste0</span><span class="p">(</span><span class="s">&quot;assets/figures/&quot;</span><span class="p">,</span> <span class="sb">`_post_path`</span><span class="p">,</span> <span class="s">&quot;/&quot;</span><span class="p">)</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span> fig_dir_full <span class="o">&lt;-</span> <span class="kp">paste0</span><span class="p">(</span>blog_dir<span class="p">,</span> fig_dir<span class="p">)</span> <span class="o">--&gt;</span>
+
+<span class="o">&lt;!--</span> <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kp">file.exists</span><span class="p">(</span>fig_dir_full<span class="p">))</span> <span class="p">{</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   <span class="kp">dir.create</span><span class="p">(</span>fig_dir_full<span class="p">)</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span> <span class="p">}</span> <span class="o">--&gt;</span>
+
+<span class="o">&lt;!--</span> knitr<span class="o">::</span>render_jekyll<span class="p">(</span><span class="s">&quot;pygments&quot;</span><span class="p">)</span> <span class="o">--&gt;</span>
+
+<span class="o">&lt;!--</span> knitr<span class="o">::</span>opts_knit<span class="o">$</span>set<span class="p">(</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   base.url <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="p">,</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   base.dir <span class="o">=</span> blog_dir<span class="p">,</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   width <span class="o">=</span> <span class="m">10</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span> <span class="p">)</span> <span class="o">--&gt;</span>
+
+<span class="o">&lt;!--</span> knitr<span class="o">::</span>opts_chunk<span class="o">$</span>set<span class="p">(</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   fig.path <span class="o">=</span> <span class="kp">paste0</span><span class="p">(</span>fig_dir<span class="p">),</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   fig.width <span class="o">=</span> <span class="m">5</span><span class="p">,</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   fig.height <span class="o">=</span> <span class="m">5</span><span class="p">,</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span>   dev <span class="o">=</span> <span class="s">&quot;svg&quot;</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span> <span class="p">)</span> <span class="o">--&gt;</span>
+<span class="o">&lt;!--</span></code></pre></div>
+ -->
+
+
+  
+  <div class="item_meta">
+    <span class="item_tags">
+      Tags:
+      
+      <a href="/tags/jekyll.html">jekyll</a>
+      
+    </span>
+  </div>
+    
+
+  <div class="item_meta">
+    <span class="item_tags">
+      Posts:
+       
+    </span>
+  </div>
+</div>
+
+    
+  </div>
+</div>
+
+
+
+        <div id="footer">
+          <p><a href="/rss.xml">RSS feed</a></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

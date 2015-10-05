@@ -1,0 +1,179 @@
+
+/** Based on paperplanes.de's style **/
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  font: normal 18px "Avenir Next", Helvetica, Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+  /* color: #4c4c4c; */
+  color: black;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.box {
+  max-width: 600px;
+  margin: 0px auto;
+  margin-top: 20px;
+  padding: 0;
+  line-height: 26px;
+  text-align: left;
+}
+
+/* body .box { */
+/*   /\* max-width: 650px; *\/ */
+/*   max-width: 600px; */
+/*   margin: 0px auto; */
+/*   margin-top: 20px; */
+/*   margin-bottom: 20px; */
+/*   padding: 0; */
+/* } */
+
+#footer {
+  /* clear: both; */
+  height: 21px;
+  min-height: 21px;
+  padding: 0px;
+  margin: 0px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: 14px;
+}
+
+#head {
+  margin: 0px;
+  padding: 0px;
+  height: 190px;
+  min-height: 190px;
+  width: 100%;
+  background-color: #738881;
+  text-align: left;
+}
+
+#header-content {
+  width: 650px;
+  margin: 0px auto;
+}
+
+#header-content #tryphon {
+  transform: scale(0.6);
+  -webkit-transform: scale(0.6);
+  -moz-transform: scale(0.6);
+  float: right;
+  margin-top: -50px;
+}
+
+#head #about {
+  width: 590px;
+  margin: 0px auto; 
+  padding-top: 50px;
+}
+
+#head #about .about-sub-title {
+  font-size: 17px;
+}
+
+#head h1 {
+  color: white;
+  font-size: 44px;
+  padding-top: 0px;
+}
+
+#head p {
+  margin: 0px;
+  margin-top: 5px;
+}
+
+#head a, #head a:hover, #head a:active, #head a:visited {
+  color: white;
+  text-decoration: underline;
+}
+
+#footer {
+  background-color: #f5f5f5;
+  margin-bottom: 45px;
+}
+
+h1, h2, h3, h4 {
+  /* color: #5B6C66; */
+  color: #45534E;
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  font-size: 22px;
+  font-weight: normal;
+  padding-top: 25px;
+  /* padding-bottom: 3px; */
+}
+h2 {
+  font-size: 20px;
+  padding-top: 2px;
+  font-weight: normal;
+}
+h3 {
+  font-size: 18px;
+  font-weight: normal;
+}
+h4 {
+  font-size: 12px;
+  font-weight: normal;
+  padding-top: 5px;
+}
+
+.first {
+  padding-top: 25px;
+}
+
+.item_meta {
+  /* padding-top: 5px; */
+  /* padding-bottom: 10px; */
+  font-size: 12px;
+  color: #777;
+  font-weight: normal;
+}
+.item_tags, .item_tags_navig {
+  clear: both;
+  font-size: 11px;
+}
+.item_tags_navig {
+  float: right;
+}
+
+a {
+  color: #748A82;
+  text-decoration: none;
+}
+a:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+h1 a, h1 a:hover {
+        color: #fff;
+        text-decoration: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+      }
+h1 a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+
+#archives h3 {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+#archives .archive-year {
+  padding-top: 35px;
+  padding-bottom: 5px;
+}
