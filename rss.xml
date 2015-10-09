@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-<channel>
-        <title></title>
-        <description> - </description>
-        <link>http://lionel-.github.io</link>
-        <atom:link href="http://lionel-.github.io" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Fri, 09 Oct 2015 12:50:59 +0200</lastBuildDate>
-        <pubDate>Fri, 09 Oct 2015 12:50:59 +0200</pubDate>
-        <ttl>60</ttl>
+  <channel>
+    <title></title>
+    <description> - </description>
+    <link>http://lionel-.github.io</link>
+    <atom:link href="http://lionel-.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 09 Oct 2015 13:22:26 +0200</lastBuildDate>
+    <pubDate>Fri, 09 Oct 2015 13:22:26 +0200</pubDate>
+    <ttl>60</ttl>
 
-
-        <item>
-                <title>Using purrr with dplyr</title>
-                <description>&lt;p&gt;&lt;code&gt;purrr&lt;/code&gt; was finally
+    
+    <item>
+      <title>Using purrr with dplyr</title>
+      <description>&lt;p&gt;&lt;code&gt;purrr&lt;/code&gt; was finally
 &lt;a href=&quot;http://blog.rstudio.org/2015/09/29/purrr-0-1-0/&quot;&gt;released&lt;/a&gt; on CRAN
 last week. This package is focused on working with lists (and data
 frames by the same token). However it is not a DSL for lists in the
 way dplyr is a DSL for data frames. It aims at creating a &amp;quot;better
 standard lib&amp;quot; focused on functional programming. Purrr should feel
-like R programming and bring out the elegance of the language.&lt;/p&gt;
+like R programming and bring out the elegance of the language. That
+said, purrr can be a nice companion to your dplyr pipelines especially
+when you need to apply a function to many columns. In this post I show
+how purrr&amp;#39;s functional tools can be applied to a dplyr workflow.&lt;/p&gt;
 
-&lt;p&gt;That said, purrr can be a nice companion to your dplyr pipelines
-especially when you need to apply a function to many columns. dplyr
-provides &lt;code&gt;mutate_each()&lt;/code&gt; and &lt;code&gt;summarise_each()&lt;/code&gt; for this purpose but I
-find that they are not as easy to use as the rest of the
-interface. This is mostly because there is no easy way to map a
-function to parts of your data frame. It&amp;#39;s all columns or
+&lt;p&gt;dplyr provides &lt;code&gt;mutate_each()&lt;/code&gt; and &lt;code&gt;summarise_each()&lt;/code&gt; for the purpose
+of mapping functions but I find that they are not as easy to use as
+the rest of the interface. This is mostly because there is no easy way
+to map a function to parts of your data frame. It&amp;#39;s all columns or
 nothing. Also, they introduce a custom notation for lambda functions that
 can be a bit cumbersome. These are two areas where purrr shines in
 comparison. And since the interface has been designed with pipes in
@@ -188,14 +189,14 @@ function with the &lt;code&gt;by_slice()&lt;/code&gt; adverb:&lt;/p&gt;
   slice_rows&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;cyl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
   by_slice&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;map&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;x &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-                <link>http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr</link>
-                <guid>http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr</guid>
-                <pubDate>Thu, 08 Oct 2015 00:00:00 +0200</pubDate>
-        </item>
-
-        <item>
-                <title>Starting a blog</title>
-                <description>&lt;p&gt;I am starting this blog mostly to share Emacs tricks and perhaps talk
+      <link>http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr</link>
+      <guid>http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr</guid>
+      <pubDate>Thu, 08 Oct 2015 00:00:00 +0200</pubDate>
+    </item>
+    
+    <item>
+      <title>Starting a blog</title>
+      <description>&lt;p&gt;I am starting this blog mostly to share Emacs tricks and perhaps talk
 about some R projects of mine. As is often the case, this blog will
 serve as a way of keeping trace of how I solved a problem or where I
 found a solution.&lt;/p&gt;
@@ -253,11 +254,11 @@ the html to your Github repository.&lt;/p&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
  --&gt;
 </description>
-                <link>http://lionel-.github.io/2015/10/05/starting-a-blog</link>
-                <guid>http://lionel-.github.io/2015/10/05/starting-a-blog</guid>
-                <pubDate>Mon, 05 Oct 2015 00:00:00 +0200</pubDate>
-        </item>
+      <link>http://lionel-.github.io/2015/10/05/starting-a-blog</link>
+      <guid>http://lionel-.github.io/2015/10/05/starting-a-blog</guid>
+      <pubDate>Mon, 05 Oct 2015 00:00:00 +0200</pubDate>
+    </item>
+    
 
-
-</channel>
+  </channel>
 </rss>

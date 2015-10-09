@@ -4,7 +4,7 @@
  <title></title>
  <link href="http://lionel-.github.io" rel="self"/>
  <link href="http://lionel-.github.io"/>
- <updated>2015-10-09T12:50:59+02:00</updated>
+ <updated>2015-10-09T13:22:26+02:00</updated>
  <id>http://lionel-.github.io</id>
  <author>
    <name></name>
@@ -23,14 +23,15 @@ last week. This package is focused on working with lists (and data
 frames by the same token). However it is not a DSL for lists in the
 way dplyr is a DSL for data frames. It aims at creating a &amp;quot;better
 standard lib&amp;quot; focused on functional programming. Purrr should feel
-like R programming and bring out the elegance of the language.&lt;/p&gt;
+like R programming and bring out the elegance of the language. That
+said, purrr can be a nice companion to your dplyr pipelines especially
+when you need to apply a function to many columns. In this post I show
+how purrr&amp;#39;s functional tools can be applied to a dplyr workflow.&lt;/p&gt;
 
-&lt;p&gt;That said, purrr can be a nice companion to your dplyr pipelines
-especially when you need to apply a function to many columns. dplyr
-provides &lt;code&gt;mutate_each()&lt;/code&gt; and &lt;code&gt;summarise_each()&lt;/code&gt; for this purpose but I
-find that they are not as easy to use as the rest of the
-interface. This is mostly because there is no easy way to map a
-function to parts of your data frame. It&amp;#39;s all columns or
+&lt;p&gt;dplyr provides &lt;code&gt;mutate_each()&lt;/code&gt; and &lt;code&gt;summarise_each()&lt;/code&gt; for the purpose
+of mapping functions but I find that they are not as easy to use as
+the rest of the interface. This is mostly because there is no easy way
+to map a function to parts of your data frame. It&amp;#39;s all columns or
 nothing. Also, they introduce a custom notation for lambda functions that
 can be a bit cumbersome. These are two areas where purrr shines in
 comparison. And since the interface has been designed with pipes in
