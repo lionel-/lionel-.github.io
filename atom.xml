@@ -1,38 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
- <title>Jekyll Bootstrap</title>
- <link href="http://lionel-.github.io/atom.xml" rel="self"/>
+ <title></title>
+ <link href="http://lionel-.github.io" rel="self"/>
  <link href="http://lionel-.github.io"/>
- <updated>2015-10-06T00:38:52+02:00</updated>
+ <updated>2015-10-09T12:50:59+02:00</updated>
  <id>http://lionel-.github.io</id>
  <author>
-   <name>Name Lastname</name>
-   <email>blah@email.test</email>
+   <name></name>
+   <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Using purrr with dplyr</title>
+   <link href="http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr"/>
+   <updated>2015-10-08T00:00:00+02:00</updated>
+   <id>http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr</id>
+   <content type="html">&lt;p&gt;&lt;code&gt;purrr&lt;/code&gt; was finally
+&lt;a href=&quot;http://blog.rstudio.org/2015/09/29/purrr-0-1-0/&quot;&gt;released&lt;/a&gt; on CRAN
+last week. This package is focused on working with lists (and data
+frames by the same token). However it is not a DSL for lists in the
+way dplyr is a DSL for data frames. It aims at creating a &amp;quot;better
+standard lib&amp;quot; focused on functional programming. Purrr should feel
+like R programming and bring out the elegance of the language.&lt;/p&gt;
+
+&lt;p&gt;That said, purrr can be a nice companion to your dplyr pipelines
+especially when you need to apply a function to many columns. dplyr
+provides &lt;code&gt;mutate_each()&lt;/code&gt; and &lt;code&gt;summarise_each()&lt;/code&gt; for this purpose but I
+find that they are not as easy to use as the rest of the
+interface. This is mostly because there is no easy way to map a
+function to parts of your data frame. It&amp;#39;s all columns or
+nothing. Also, they introduce a custom notation for lambda functions that
+can be a bit cumbersome. These are two areas where purrr shines in
+comparison. And since the interface has been designed with pipes in
+mind, purrr&amp;#39;s functions integrate dplyr pipelines quite well.&lt;/p&gt;
+
+&lt;h2&gt;Mapping to columns conditionally&lt;/h2&gt;
+
+&lt;p&gt;One of my favourite functions in purrr is &lt;code&gt;map_if()&lt;/code&gt;. It accepts a
+predicate function or a logical vector that specifies which columns
+should be mapped with a function. This makes it easy to apply a
+function conditionally, as in the following snippet where we transform
+all factors to a character vector:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;purrr&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;dplyr&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;diamonds&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; package &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ggplot2&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+diamonds &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; map_if&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;is.factor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.character&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; str&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#&amp;gt; Classes &amp;#39;tbl_df&amp;#39;, &amp;#39;tbl&amp;#39; and &amp;#39;data.frame&amp;#39;:    53940 obs. of  10 variables:
+#&amp;gt;  $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+#&amp;gt;  $ cut    : chr  &amp;quot;Ideal&amp;quot; &amp;quot;Premium&amp;quot; &amp;quot;Good&amp;quot; &amp;quot;Premium&amp;quot; ...
+#&amp;gt;  $ color  : chr  &amp;quot;E&amp;quot; &amp;quot;E&amp;quot; &amp;quot;E&amp;quot; &amp;quot;I&amp;quot; ...
+#&amp;gt;  $ clarity: chr  &amp;quot;SI2&amp;quot; &amp;quot;SI1&amp;quot; &amp;quot;VS1&amp;quot; &amp;quot;VS2&amp;quot; ...
+#&amp;gt;  $ depth  : num  61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+#&amp;gt;  $ table  : num  55 61 65 58 58 57 57 55 61 61 ...
+#&amp;gt;  $ price  : int  326 326 327 334 335 336 336 337 337 338 ...
+#&amp;gt;  $ x      : num  3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+#&amp;gt;  $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+#&amp;gt;  $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Mapping to specific columns&lt;/h2&gt;
+
+&lt;p&gt;While cleaning a dataset, it is common to apply the same
+transformation to many variables. For example, reversing a scale or
+shifting it to zero. Instead of writing a long &lt;code&gt;mutate()&lt;/code&gt; call with
+those transformations, I prefer to do it in one go.&lt;/p&gt;
+
+&lt;p&gt;This can be done with &lt;code&gt;map_at()&lt;/code&gt; which takes a vector of column
+positions or column names. For example, let&amp;#39;s assume you have written
+two functions &lt;code&gt;reverse_scale()&lt;/code&gt; and &lt;code&gt;shift_to_zero()&lt;/code&gt; that should be
+applied to specific variables. You record those variables in character
+vectors just before starting the dplyr/purrr pipeline, and then add
+the relevant &lt;code&gt;map_at()&lt;/code&gt; calls.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;to_reverse_vars &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&amp;quot;cyl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;am&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;vs&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&amp;quot;gear&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;carb&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+to_zero_vars &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&amp;quot;cyl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;gear&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;carb&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+mtcars &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
+  select&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;disp&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
+  map_at&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;to_reverse_vars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; reverse_scale&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
+  map_at&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;to_zero_vars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; shift_to_zero&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Expanding one column to many with lmap()&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;lmap()&lt;/code&gt;&amp;#39;s story starts with
+&lt;a href=&quot;https://twitter.com/hadleywickham/status/428157972733108224&quot;&gt;the mysterious tweet&lt;/a&gt;
+and
+&lt;a href=&quot;https://twitter.com/hadleywickham/status/428161355502202881&quot;&gt;the gist&lt;/a&gt;
+that show up when you google &amp;quot;hadley monads&amp;quot;. While I&amp;#39;m not sure I
+really understand how it is monadic, &lt;code&gt;lmap()&lt;/code&gt; is quite useful
+to extend a data frame without having to deal with binds, merges or
+having to define new column names.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s say you have a numeric variable that you want to discretise for
+data exploration or modelling (for example, to use as pivot in a
+ggplot facetting). There are several ways to cut a vector into
+pieces. Ideally, the cutpoints should be derived from theory, but it&amp;#39;s
+often not possible or too time consuming to do so. In this case, I
+like to create different categorisations and check if the results are
+consistent (and investigate when they are not). Let&amp;#39;s define two
+cutting functions, one that tries to create categories with equal
+sample sizes while the other just uses equal ranges to determine
+cutpoints.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;cut_equal_sizes &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; n &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  ggplot2&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;cut_number&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; n&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+cut_equal_ranges &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; n &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;cut&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; n&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; include.lowest &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It&amp;#39;d be nice to &amp;quot;grow&amp;quot; the data frame at specific numeric columns in
+such a way that that two news discretised variables appear just next
+to them with appropriate column names. &lt;code&gt;lmap()&lt;/code&gt; is adapted to this
+because instead of applying a function to the vectors contained in a
+data frame, it applies it to subsets of size 1 of that data
+frame. This has several advantages:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;You get the name of the vector as an attribute of the enclosing data
+frame.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The usual mapping tools work on columns, so when you return a list
+or a data frame of vectors, they&amp;#39;ll try to stick these inside a
+list-column, which is not what we want in this case. By comparison,
+&lt;code&gt;lmap()&lt;/code&gt; gives a data frame to a function and expects a data frame
+in return and has no problem dealing with it when it has more than
+one column.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let&amp;#39;s write a function to be mapped in such a way. This function
+doesn&amp;#39;t work with vectors but with vectors enclosed in a data
+frame. It takes and returns a data frame.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;cut_categories &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; n &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Record the name of the enclosed vector&lt;/span&gt;
+  name &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Create the new columns&lt;/span&gt;
+  x&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;cat_n &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; cut_equal_sizes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt; n&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  x&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;cat_r &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; cut_equal_ranges&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt; n&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Adjusting the names of the new columns&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;_&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; n&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+  x
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then we just add a &lt;code&gt;lmap()&lt;/code&gt; call to our data cleaning pipeline:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;to_discretise_vars &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&amp;quot;mpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;disp&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;drat&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&amp;quot;wt&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;qsec&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+mtcars &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; lmap_at&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;to_discretise_vars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; cut_categories&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; str&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#&amp;gt; Classes &amp;#39;tbl_df&amp;#39;, &amp;#39;tbl&amp;#39; and &amp;#39;data.frame&amp;#39;:    32 obs. of  21 variables:
+#&amp;gt;  $ mpg        : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+#&amp;gt;  $ mpg_3cat_n : Factor w/ 3 levels &amp;quot;[10.4,16.7]&amp;quot;,..: 2 2 3 2 2 2 1 3 3 2 ...
+#&amp;gt;  $ mpg_3cat_r : Factor w/ 3 levels &amp;quot;[10.4,18.2]&amp;quot;,..: 2 2 2 2 2 1 1 2 2 2 ...
+#&amp;gt;  $ cyl        : num  6 6 4 6 8 6 8 4 4 6 ...
+#&amp;gt;  $ disp       : num  160 160 108 258 360 ...
+#&amp;gt;  $ disp_3cat_n: Factor w/ 3 levels &amp;quot;[71.1,146]&amp;quot;,&amp;quot;(146,293]&amp;quot;,..: 2 2 1 2 3 2 3 2 1 2 ...
+#&amp;gt;  $ disp_3cat_r: Factor w/ 3 levels &amp;quot;[70.7,205]&amp;quot;,&amp;quot;(205,338]&amp;quot;,..: 1 1 1 2 3 2 3 1 1 1 ...
+#&amp;gt;  $ hp         : num  110 110 93 110 175 105 245 62 95 123 ...
+#&amp;gt;  $ drat       : num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+#&amp;gt;  $ drat_3cat_n: Factor w/ 3 levels &amp;quot;[2.76,3.17]&amp;quot;,..: 2 2 2 1 1 1 2 2 3 3 ...
+#&amp;gt;  $ drat_3cat_r: Factor w/ 3 levels &amp;quot;[2.76,3.48]&amp;quot;,..: 2 2 2 1 1 1 1 2 2 2 ...
+#&amp;gt;  $ wt         : num  2.62 2.88 2.32 3.21 3.44 ...
+#&amp;gt;  $ wt_3cat_n  : Factor w/ 3 levels &amp;quot;[1.51,2.81]&amp;quot;,..: 1 2 1 2 2 2 3 2 2 2 ...
+#&amp;gt;  $ wt_3cat_r  : Factor w/ 3 levels &amp;quot;[1.51,2.82]&amp;quot;,..: 1 2 1 2 2 2 2 2 2 2 ...
+#&amp;gt;  $ qsec       : num  16.5 17 18.6 19.4 17 ...
+#&amp;gt;  $ qsec_3cat_n: Factor w/ 3 levels &amp;quot;[14.5,17]&amp;quot;,&amp;quot;(17,18.6]&amp;quot;,..: 1 1 3 3 1 3 1 3 3 2 ...
+#&amp;gt;  $ qsec_3cat_r: Factor w/ 3 levels &amp;quot;[14.5,17.3]&amp;quot;,..: 1 1 2 2 1 3 1 2 3 2 ...
+#&amp;gt;  $ vs         : num  0 0 1 1 0 1 0 1 1 1 ...
+#&amp;gt;  $ am         : num  1 1 1 0 0 0 0 0 0 0 ...
+#&amp;gt;  $ gear       : num  4 4 4 3 3 3 3 4 4 4 ...
+#&amp;gt;  $ carb       : num  4 4 1 1 2 1 4 2 2 4 ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The data frame comes out of the pipeline with the new discretised
+variables nicely arranged and named.&lt;/p&gt;
+
+&lt;h2&gt;Mapping a function within groups&lt;/h2&gt;
+
+&lt;p&gt;purrr is also able to deal with dplyr groupings. The groups can be
+defined with either &lt;code&gt;dplyr::by_group()&lt;/code&gt; or &lt;code&gt;purrr::slice_rows()&lt;/code&gt;. To
+apply a function to all columns within groups, just combine a mapping
+function with the &lt;code&gt;by_slice()&lt;/code&gt; adverb:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mtcars &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
+  slice_rows&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;cyl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
+  by_slice&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;map&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;x &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+ </entry>
  
  <entry>
    <title>Starting a blog</title>
    <link href="http://lionel-.github.io/2015/10/05/starting-a-blog"/>
    <updated>2015-10-05T00:00:00+02:00</updated>
    <id>http://lionel-.github.io/2015/10/05/starting-a-blog</id>
-   <content type="html">&lt;p&gt;Hello, world. I am starting this blog mostly to share Emacs tricks and
-perhaps talk about some R projects of mine. As is often the case,
-this blog will serve as a way of keeping trace of how I solved a
-problem or where I found a solution.&lt;/p&gt;
+   <content type="html">&lt;p&gt;I am starting this blog mostly to share Emacs tricks and perhaps talk
+about some R projects of mine. As is often the case, this blog will
+serve as a way of keeping trace of how I solved a problem or where I
+found a solution.&lt;/p&gt;
 
-&lt;p&gt;Here’s the first one: if you start a blog and like clean and
-minimalist layouts and workflows, it’s probably best to ignore
-high-level wrappers like
-&lt;a href=&quot;http://jekyllbootstrap.com&quot;&gt;Jekyll Bootstrap&lt;/a&gt;. Just bite the bullet
-and learn pure Jekyll. I started with Jekyll Bootstrap but ended up
+&lt;p&gt;Here&amp;#39;s the first one: if you start a blog and like clean and
+minimalist layouts and workflows, it&amp;#39;s probably best to ignore
+high-level wrappers like &lt;a href=&quot;http://jekyllbootstrap.com&quot;&gt;JB&lt;/a&gt;. Just bite
+the bullet and learn pure Jekyll. I started with JB but ended up
 removing all of it layer after layer. The only bit I still use is the
-rakefile to create new posts, but it is trivial stuff.&lt;/p&gt;
+rakefile to create new posts, but this is trivial stuff.&lt;/p&gt;
 
 &lt;p&gt;Also, I quickly gave up on the idea of having Github generate the
 pages. Most Jekyll plugins are not supported (such as generators of
-tag pages) and it’s easy enough to build the pages locally and push
+tag pages) and it&amp;#39;s easy enough to build the pages locally and push
 the html to your Github repository.&lt;/p&gt;
 
 &lt;!-- 
