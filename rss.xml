@@ -5,10 +5,403 @@
     <description> - </description>
     <link>http://lionel-.github.io</link>
     <atom:link href="http://lionel-.github.io/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 10 Oct 2015 15:21:33 +0200</lastBuildDate>
-    <pubDate>Sat, 10 Oct 2015 15:21:33 +0200</pubDate>
+    <lastBuildDate>Mon, 15 Feb 2016 14:21:32 +0100</lastBuildDate>
+    <pubDate>Mon, 15 Feb 2016 14:21:32 +0100</pubDate>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>The future of R syntax?</title>
+      <description>&lt;p&gt;Following &lt;a href=&quot;http://blog.r-enthusiasts.com/2014/08/22/pro-grammar-and-devel-hoper/&quot;&gt;Romain François&amp;#39;s
+example&lt;/a&gt;,
+I spent last week playing with the definition of the R grammar. I
+focused on four changes that I think would improve existing R idioms:
+creating lists with bare square brackets; a compact lambda notation;
+labelled blocks of code; and of course implementing natively the pipe
+operator. While none of these changes are strictly necessary, they
+make the language more comfortable to use and nicer to look at. I
+provide working implementations for all of them in the &lt;code&gt;brackets&lt;/code&gt;,
+&lt;code&gt;brackets-lambda&lt;/code&gt;, &lt;code&gt;labelled&lt;/code&gt; and &lt;code&gt;pipe&lt;/code&gt; branches at
+&lt;a href=&quot;https://github.com/lionel-/r-source&quot;&gt;https://github.com/lionel-/r-source&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Bare Square Brackets&lt;/h2&gt;
+
+&lt;p&gt;Advanced treatments of R programming stress that R is a functional
+language. This essentially means that functions are first-class
+citizens and that you can pass them as arguments to other
+functions. This makes it possible to have the apply family of
+functions in base R or the map family in purrr. By the same token,
+this makes lists extremely useful in R. They can contain any kind of
+objects and you can use functional programming techniques to
+manipulate them with expressive idioms. In addition, since lists
+elements are associated with names, they can directly map to the
+arguments of a function call via &lt;code&gt;do.call()&lt;/code&gt; or &lt;code&gt;purrr::invoke()&lt;/code&gt;,
+another key idiom of functional programming in R.&lt;/p&gt;
+
+&lt;p&gt;Despite their importance in the R language, lists do not benefit from
+as much syntax sugar as in other languages. Hence my &lt;a href=&quot;https://github.com/lionel-/r-source/compare/bd712b1...fa0222cc&quot;&gt;first change to
+the R syntax&lt;/a&gt;:
+creating lists with bare square brackets:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;letters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [[1]]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] 3&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [[2]]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] 4&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [[3]]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt;  [1] &amp;quot;a&amp;quot; &amp;quot;b&amp;quot; &amp;quot;c&amp;quot; &amp;quot;d&amp;quot; &amp;quot;e&amp;quot; &amp;quot;f&amp;quot; &amp;quot;g&amp;quot; &amp;quot;h&amp;quot; &amp;quot;i&amp;quot; &amp;quot;j&amp;quot; &amp;quot;k&amp;quot; &amp;quot;l&amp;quot; &amp;quot;m&amp;quot; &amp;quot;n&amp;quot; &amp;quot;o&amp;quot; &amp;quot;p&amp;quot; &amp;quot;q&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [18] &amp;quot;r&amp;quot; &amp;quot;s&amp;quot; &amp;quot;t&amp;quot; &amp;quot;u&amp;quot; &amp;quot;v&amp;quot; &amp;quot;w&amp;quot; &amp;quot;x&amp;quot; &amp;quot;y&amp;quot; &amp;quot;z&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;letters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; map_lgl&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;is.double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1]  TRUE  TRUE FALSE&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This can greatly improve code clarity. Compare dense nested list
+constructs such as&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;to the much lighter and cleaner&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;An important use case that would also benefit from this syntax is when
+a function needs some additional arguments in the form of a
+list. Think of the &lt;code&gt;contrasts&lt;/code&gt; argument of &lt;code&gt;lm()&lt;/code&gt; or the &lt;code&gt;args&lt;/code&gt;
+argument of ggplot2&amp;#39;s &lt;code&gt;stat_function()&lt;/code&gt;. They both involve passing a
+list of arguments, which bloats the calls and makes scripts heavier to
+read. The bare brackets notation is a bit lighter:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mtcars&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;cyl &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.factor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mtcars&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;cyl&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Specific contrast for the predictor `cyl`&lt;/span&gt;
+lm&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;disp &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; cyl &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; am&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; data &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; mtcars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; contrasts &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;cyl &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; contr.sum&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I also have a feeling that bare brackets may be useful to come up with
+clean creative syntax in DSLs. Like any syntax construct in R, the
+square brackets are represented as a plain text function. For example
+instead of &lt;code&gt;mtcars[[&amp;quot;cyl&amp;quot;]]&lt;/code&gt;, you can write &lt;code&gt;
+`[[`(mtcars, &amp;quot;cyl&amp;quot;)&lt;/code&gt;. The string for bare brackets is &lt;code&gt;`[]&lt;/code&gt; ` and
+allows you to redefine its functionality as follows:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;sb&quot;&gt;`[]`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] &amp;quot;hello&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;By the same token, DSLs could capture bare brackets and give them some
+specific meaning.&lt;/p&gt;
+
+&lt;p&gt;Finally, some additional syntax rule could allow for list
+comprehensions by looking up the &lt;code&gt;for&lt;/code&gt; keyword inside bare
+brackets. This would enable this kind of python-style code:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# List comprehension:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;for&lt;/span&gt; x &lt;span class=&quot;kr&quot;&gt;in&lt;/span&gt; mtcars&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Equivalent to the following map:&lt;/span&gt;
+mtcars &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; map&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;However I think that&amp;#39;s going a step too far as the functional version
+is much more R-like.&lt;/p&gt;
+
+&lt;h2&gt;Lambda Notation&lt;/h2&gt;
+
+&lt;p&gt;In R functions can be created, given names and passed around. But a
+common idiom involves creating anonymous functions (lambda functions)
+on the fly. As the full syntax for defining a function can be
+cumbersome in those situations, many languages such as
+&lt;a href=&quot;http://docs.scala-lang.org/tutorials/tour/anonymous-function-syntax.html&quot;&gt;Scala&lt;/a&gt;,
+&lt;a href=&quot;https://wiki.haskell.org/Anonymous_function&quot;&gt;Haskell&lt;/a&gt;,
+&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/dd233201.aspx&quot;&gt;F-Sharp&lt;/a&gt;,
+&lt;a href=&quot;https://docs.python.org/2/reference/expressions.html#lambda&quot;&gt;Python&lt;/a&gt;,
+and even &lt;a href=&quot;http://en.cppreference.com/w/cpp/language/lambda&quot;&gt;C++&lt;/a&gt;
+support a compact notation for creating lambdas. Given the importance
+of lambda functions in R (as in the &lt;code&gt;apply&lt;/code&gt; family of functions), it
+would be particularly nice to provide an elegant notation for creating
+them. The &lt;a href=&quot;https://github.com/lionel-/r-source/compare/fa0222c...18998a28#diff-eab64d2b802078a8639bc3182307d6b5&quot;&gt;second syntax
+update&lt;/a&gt;,
+relies on the bare square brackets notation for that purpose.&lt;/p&gt;
+
+&lt;p&gt;The notation is based on the rightward assignment &lt;code&gt;-&amp;gt;&lt;/code&gt;, an operator
+that is barely used in practice because it&amp;#39;s a bit confusing. Bare
+square brackets followed by &lt;code&gt;-&amp;gt;&lt;/code&gt; followed by any R expression create a
+function in place:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; x
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [x] -&amp;gt; 3 * x&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] 15&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;col &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; $speed&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] 0.03246753&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; $dist&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] 0.05583993&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This notation supports variadic lambdas by supplying dots:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;variadic &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  sum &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;..1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;..2&lt;/span&gt;
+  sum &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+variadic&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# [1] 21&lt;/span&gt;
+
+
+variadic2 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+variadic2&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;a&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;b&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# [1] 3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Thanks to operator precedence and the left associativity of &lt;code&gt;-&amp;gt;&lt;/code&gt;,
+usual R rules for assignment apply. The following snippet assigns the
+lambda first to &lt;code&gt;byproduct&lt;/code&gt;, then to &lt;code&gt;fun&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;fun &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; x &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; byproduct
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Labelled Blocks&lt;/h2&gt;
+
+&lt;p&gt;In R, code is data. When a function is called, its arguments are
+usually evaluated and assigned to the parameter. But functions can
+also request to see the code used to compute that value in the form of
+a &lt;a href=&quot;http://adv-r.had.co.nz/Expressions.html&quot;&gt;quoted expression&lt;/a&gt;. This
+capacity to capture code is invaluable to creating intuitive
+sublanguages like &lt;code&gt;dplyr&lt;/code&gt; or &lt;code&gt;ggplot2&lt;/code&gt;. The &lt;a href=&quot;https://github.com/lionel-/r-source/commit/e959f91b97b31de93781befc972952b8eb1a38a4&quot;&gt;third
+change&lt;/a&gt;
+that I introduce to R&amp;#39;s syntax focuses on the subset of DSLs that
+manipulate blocks of code, such as the great &lt;code&gt;testthat&lt;/code&gt; package.&lt;/p&gt;
+
+&lt;p&gt;Currently, blocks of code are passed to a function via curly brackets:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;test_that&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;my code works&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Wouldn&amp;#39;t it be nicer to have the same syntax as function definitions,
+for loops and if-else branches? That&amp;#39;s the purpose of this second syntax
+change. It allows you to write:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;test_that&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;my code works&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That&amp;#39;s a fairly cosmetic change and admittedly not earth
+shattering. However, it makes the language a bit nicer and
+easthetically pleasing. This syntax would be a particulary nice for
+alternative ways of defining functions. For example, the type-checked
+functions of the
+&lt;a href=&quot;https://github.com/smbache/ensurer/blob/master/R/function_.R&quot;&gt;&lt;code&gt;ensurer&lt;/code&gt; package&lt;/a&gt;
+would look a bit more natural:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;type_checked &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; function_&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;a &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; b &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;character&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  some_call&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  other_call&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;b&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To make this work in the most R-like possible way, I decided to let
+the function call be any expression. This mirrors the syntax of
+regular function calls which may be embedded in arbitrary ways. In the
+following snippet, &lt;code&gt;russian_dolls()&lt;/code&gt; returns a list whose first
+element is a function that returns a function that returns 3:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;russian_dolls&lt;span class=&quot;p&quot;&gt;()[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]()()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This kind of constructs are also possible with labelled blocks:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;my_block&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]()()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  code
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The only requirement is that the end result of the expression be a
+function that accepts at least one argument (the block of code). This
+means that &lt;code&gt;test_that()&lt;/code&gt; would be implemented in this way:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;test_that &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;desc&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;force&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;desc&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;code&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    test_code&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;desc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;substitute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;code&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; env &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;parent.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;kp&quot;&gt;invisible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;test_that&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;my code works&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  check_equal&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;A&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; B&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  check_identical&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; D&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Is actually equivalent to&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;code&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    test_code&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;desc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;substitute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;code&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; env &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;parent.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;kp&quot;&gt;invisible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;})({&lt;/span&gt;
+   check_equal&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;A&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; B&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   check_identical&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; D&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In addition to expressions, simple labels are of course allowed:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;label &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  line1
+  line2
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For instance this would fit well with the
+&lt;a href=&quot;http://r-nimble.org/examples-2&quot;&gt;Nimble DSL&lt;/a&gt; for specifying Bugs
+models. Simple labels work a bit differently than expressions
+though. Here, instead of looking for a function named &lt;code&gt;label&lt;/code&gt;, the
+parser will look for &lt;code&gt;label{}&lt;/code&gt;. This makes it possible to use the same
+identifier for a regular function call and a labelled block:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;label &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;sb&quot;&gt;`label{}`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;code&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;
+
+label&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] 3&lt;/span&gt;
+
+label &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  anything
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] 4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finally, note that contrary to other labelled blocks such as function
+definitions, the opening curly bracket must be on the same line as
+its identifier. Otherwise it would be ambiguous whether we have a
+labelled block or two expressions separated by a newline:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;label
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;code&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This slight inconsistency is the price to pay for that syntax
+extension.&lt;/p&gt;
+
+&lt;h2&gt;Piping Operator&lt;/h2&gt;
+
+&lt;p&gt;This is of course the syntax update that many people of the R
+community are waiting for. A native piping operator. Some of the most
+popular R packages are based on piped interface: &lt;code&gt;dplyr&lt;/code&gt; who
+popularised &lt;code&gt;magrittr&lt;/code&gt;, but also &lt;code&gt;ggplot2&lt;/code&gt;. The latter uses a custom
+non-functional pipeline by overloading the &lt;code&gt;+&lt;/code&gt; operator but the sequel
+&lt;code&gt;ggvis&lt;/code&gt; does rely on functional piping. I provide for testing purposes
+&lt;a href=&quot;https://github.com/lionel-/r-source/compare/7e2a6a8...2c774a17f4&quot;&gt;two versions&lt;/a&gt;
+of a native pipe operator, &lt;code&gt;|&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Given the popularity of the pipe, having native support for it in R&amp;#39;s
+syntax would be a huge progress. Besides the obvious aesthetic concern
+(though you do get accustomed to &lt;code&gt;%&amp;gt;%&lt;/code&gt; with time) native handling of
+the pipe would improve error recovery. Here is how a traceback
+currently looks like with magrittr&amp;#39;s pipe:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;fail &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;fail&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+mtcars &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fail&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;unlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; Error in FUN(X[[i]], ...) (from #1) : fail&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;traceback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 15: stop(&amp;quot;fail&amp;quot;) at #1&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 14: FUN(X[[i]], ...)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 13: lapply(., fail)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 12: function_list[[1L]](value)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 11: unlist(.)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 10: function_list[[1L]](value)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 9: withVisible(function_list[[1L]](value))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 8: freduce(value, `_function_list`)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 7: Recall(function_list[[1L]](value), function_list[-1L])&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 6: freduce(value, `_function_list`)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 5: `_fseq`(`_lhs`)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 4: eval(expr, envir, enclos)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 3: eval(quote(`_fseq`(`_lhs`)), env, env)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 2: withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 1: mtcars %&amp;gt;% lapply(fail) %&amp;gt;% unlist()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This ugly traceback includes all the steps where magrittr manipulates
+the unevaluated code. Here is the same traceback with native support:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mtcars &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fail&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;unlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; Error in FUN(X[[i]], ...) : fail&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;traceback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 4: stop(&amp;quot;fail&amp;quot;) at #1&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 3: FUN(X[[i]], ...)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 2: lapply(mtcars, fail)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; 1: unlist(mtcars |&amp;gt; lapply(fail))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;_&lt;/code&gt; character is also legalised so it can become the placeholder
+in pipelines. The same rules as with magrittr&amp;#39;s placeholder apply:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mtcars &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; _&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;identical&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mtcars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; mtcars&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] TRUE&lt;/span&gt;
+
+mtcars &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;_&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; _&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;identical&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mtcars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mtcars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; mtcars&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&amp;gt; [1] TRUE&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I actually provide two implementations of the pipe. The first creates
+a classic binary operator that calls a special primitive
+function. These are a class of core R function that do not evaluate
+their arguments, which allows them to manipulate quoted code before
+evaluation.&lt;/p&gt;
+
+&lt;p&gt;The second implementation, called by the &lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt; operator, directly
+manipulate the parse tree. This means that you cannot redefine &lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt;. R
+will always transform the expression &lt;code&gt;object &amp;gt;&amp;gt; call()&lt;/code&gt; to
+&lt;code&gt;call(object)&lt;/code&gt; and you&amp;#39;ll never get a chance to call the operator
+manually with prefix notation. Such syntax transformation applies to a
+few operators in R, like the rightward assignment op &lt;code&gt;-&amp;gt;&lt;/code&gt; or the
+double starred exponentiation &lt;code&gt;**&lt;/code&gt;. By contrast, the first operator
+&lt;code&gt;|&amp;gt;&lt;/code&gt; does accept to be redefined and called with prefix notation.&lt;/p&gt;
+
+&lt;p&gt;I think the first implementation is more natural in the R language and
+consistent with most operators. On the other hand, manipulating the
+parse tree ensures that the placeholder &lt;code&gt;_&lt;/code&gt; will always act
+consistently as a shortcut for the LHS. This would avoid the conflicts
+that arise with the &lt;code&gt;.&lt;/code&gt; placeholder which is currently used for
+different conflicting purposes in dplyr, magrittr and purrr. Thus
+there are pros and cons for both approaches.&lt;/p&gt;
+
+&lt;h2&gt;Could this get into R Core?&lt;/h2&gt;
+
+&lt;p&gt;R Core has gotten the reputation of being a bit conservative, which is
+only fair considering the responsibility that weighs on their
+shoulders.&lt;/p&gt;
+
+&lt;p&gt;I think that contrarily to proposals for integrating optional type
+checking in the syntax, all four of these syntax changes clearly fit
+the spirit of R as a dynamic, functional language. When it makes
+sense, they can be manipulated like first class citizens through
+prefix notation like other language constructs. They shouldn&amp;#39;t disturb
+any existing R code and they improve currently used R idioms rather
+than invent new ones. So I think there is a chance that R core could
+consider some of them.&lt;/p&gt;
+
+&lt;p&gt;More testing is needed to assess the consequences in terms of
+performance and backward compatibility, though I didn&amp;#39;t find any
+problem from my limited testing. One point of contention might be that
+the bare brackets and labelled blocks increase the number of
+shift-reduce conflicts during parser generation. I guess many of those
+could be fixed by refactoring the grammar a bit, or adding precedence
+and association directives to some production rules. But core members
+will probably feel a bit nervous about applying non-trivial changes to
+that fundamental part of the R code that basically didn&amp;#39;t change since
+the &lt;a href=&quot;https://github.com/wch/r-source/blob/fa44a2cd83a81ecbccd6545895955cff7f719156/src/main/gram.y&quot;&gt;first available revision in
+1997&lt;/a&gt;.
+It&amp;#39;s probably ok to ignore these conflicts however. There&amp;#39;s currently
+81 of them and Bison, the parser generator, seems to be doing a very
+good job of automatically resolving the ambiguities.&lt;/p&gt;
+
+&lt;p&gt;My plan is to get community feedback on Twitter before proposing the
+changes to R core. In case they are interested in some them, I&amp;#39;ll run
+a comprehensive test on CRAN packages to make sure that the new syntax
+doesn&amp;#39;t break anything.&lt;/p&gt;
+
+&lt;p&gt;So, could R 4.0 look like this?&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt; test_that&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;new syntax works&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+   data &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mtcars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; mtcars&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+   expected &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;is.list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;is.double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+   mtcars &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; _&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+     map&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;is.list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;is.double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+     check_equal&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;expected&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      <link>http://lionel-.github.io/2016/02/15/ideas-for-an-updated-r-syntax</link>
+      <guid>http://lionel-.github.io/2016/02/15/ideas-for-an-updated-r-syntax</guid>
+      <pubDate>Mon, 15 Feb 2016 00:00:00 +0100</pubDate>
+    </item>
     
     <item>
       <title>Using purrr with dplyr</title>

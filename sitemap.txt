@@ -8,6 +8,8 @@ http://lionel-.github.io/sitemap.txt
 http://lionel-.github.io/tags/jekyll.html
 http://lionel-.github.io/tags/rstats.html
 http://lionel-.github.io/tags/purrr.html
+http://lionel-.github.io/tags/syntax.html
 
+http://lionel-.github.io/2016/02/15/ideas-for-an-updated-r-syntax
 http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr
 http://lionel-.github.io/2015/10/05/starting-a-blog
