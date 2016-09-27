@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description> - </description>
-    <link>http://lionel-.github.io</link>
-    <atom:link href="http://lionel-.github.io/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Tue, 27 Sep 2016 13:05:58 +0200</lastBuildDate>
-    <pubDate>Tue, 27 Sep 2016 13:05:58 +0200</pubDate>
+    <link>http://lionelhenry.github.io</link>
+    <atom:link href="http://lionelhenry.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Sep 2016 23:14:53 +0200</lastBuildDate>
+    <pubDate>Tue, 27 Sep 2016 23:14:53 +0200</pubDate>
     <ttl>60</ttl>
 
     
@@ -398,8 +398,8 @@ doesn&amp;#39;t break anything.&lt;/p&gt;
 
  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-      <link>http://lionel-.github.io/2016/02/15/ideas-for-an-updated-r-syntax</link>
-      <guid>http://lionel-.github.io/2016/02/15/ideas-for-an-updated-r-syntax</guid>
+      <link>http://lionelhenry.github.io/2016/02/15/ideas-for-an-updated-r-syntax/index.html</link>
+      <guid>http://lionelhenry.github.io/2016/02/15/ideas-for-an-updated-r-syntax/ideas-for-an-updated-r-syntax</guid>
       <pubDate>Mon, 15 Feb 2016 00:00:00 +0100</pubDate>
     </item>
     
@@ -597,8 +597,8 @@ function with the &lt;code&gt;by_slice()&lt;/code&gt; adverb:&lt;/p&gt;
   slice_rows&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;cyl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
   by_slice&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;map&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;x &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-      <link>http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr</link>
-      <guid>http://lionel-.github.io/2015/10/08/using-purrr-with-dplyr</guid>
+      <link>http://lionelhenry.github.io/2015/10/08/using-purrr-with-dplyr/index.html</link>
+      <guid>http://lionelhenry.github.io/2015/10/08/using-purrr-with-dplyr/using-purrr-with-dplyr</guid>
       <pubDate>Thu, 08 Oct 2015 00:00:00 +0200</pubDate>
     </item>
     
@@ -662,8 +662,8 @@ the html to your Github repository.&lt;/p&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
  --&gt;
 </description>
-      <link>http://lionel-.github.io/2015/10/05/starting-a-blog</link>
-      <guid>http://lionel-.github.io/2015/10/05/starting-a-blog</guid>
+      <link>http://lionelhenry.github.io/2015/10/05/starting-a-blog/index.html</link>
+      <guid>http://lionelhenry.github.io/2015/10/05/starting-a-blog/starting-a-blog</guid>
       <pubDate>Mon, 05 Oct 2015 00:00:00 +0200</pubDate>
     </item>
     
