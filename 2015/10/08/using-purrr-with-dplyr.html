@@ -39,7 +39,22 @@
 <h4><span>08 October 2015</span></h4>
 
 <div id="content">
-  <p><code>purrr</code> was finally
+  <p><strong>Update:</strong> Most of the data frame functions in purrr have been
+deprecated in favour of a new family of functions in dplyr. The intent
+is to better separate the responsibilities of packages in the
+tidyverse. First of all <code>map()</code> now always returns a list. It no
+longer preserves the data frame type. Secondly, all slice- and
+rows-based functions are now deprecated. Mapping a column is now
+handled by the colwise family of dplyr functions,
+e.g. <code>dplyr::mutate_all()</code>, <code>dplyr::summarise_if()</code>, etc. Unlike the
+<code>_each()</code> variants which only accept expressions wrapped in <code>funs()</code>,
+the new colwise family accepts regular functions as well as additional
+arguments to be passed on. The syntax is thus pretty close to purrr&#39;s:</p>
+<div class="highlight"><pre><code class="language-r" data-lang="r">mtcars <span class="o">%&gt;%</span> group_by<span class="p">(</span>cyl<span class="p">)</span> <span class="o">%&gt;%</span> mutate_all<span class="p">(</span><span class="kp">scale</span><span class="p">,</span> center <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>/Update</strong></p>
+
+<p><code>purrr</code> was finally
 <a href="http://blog.rstudio.org/2015/09/29/purrr-0-1-0/">released</a> on CRAN
 last week. This package is focused on working with lists (and data
 frames by the same token). However it is not a DSL for lists in the

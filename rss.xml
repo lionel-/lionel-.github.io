@@ -5,8 +5,8 @@
     <description> - </description>
     <link>http://lionel-.github.io</link>
     <atom:link href="http://lionel-.github.io/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 15 Feb 2016 14:21:32 +0100</lastBuildDate>
-    <pubDate>Mon, 15 Feb 2016 14:21:32 +0100</pubDate>
+    <lastBuildDate>Tue, 27 Sep 2016 13:05:58 +0200</lastBuildDate>
+    <pubDate>Tue, 27 Sep 2016 13:05:58 +0200</pubDate>
     <ttl>60</ttl>
 
     
@@ -405,7 +405,22 @@ doesn&amp;#39;t break anything.&lt;/p&gt;
     
     <item>
       <title>Using purrr with dplyr</title>
-      <description>&lt;p&gt;&lt;code&gt;purrr&lt;/code&gt; was finally
+      <description>&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; Most of the data frame functions in purrr have been
+deprecated in favour of a new family of functions in dplyr. The intent
+is to better separate the responsibilities of packages in the
+tidyverse. First of all &lt;code&gt;map()&lt;/code&gt; now always returns a list. It no
+longer preserves the data frame type. Secondly, all slice- and
+rows-based functions are now deprecated. Mapping a column is now
+handled by the colwise family of dplyr functions,
+e.g. &lt;code&gt;dplyr::mutate_all()&lt;/code&gt;, &lt;code&gt;dplyr::summarise_if()&lt;/code&gt;, etc. Unlike the
+&lt;code&gt;_each()&lt;/code&gt; variants which only accept expressions wrapped in &lt;code&gt;funs()&lt;/code&gt;,
+the new colwise family accepts regular functions as well as additional
+arguments to be passed on. The syntax is thus pretty close to purrr&amp;#39;s:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mtcars &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; group_by&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cyl&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; mutate_all&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;scale&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; center &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;/Update&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;purrr&lt;/code&gt; was finally
 &lt;a href=&quot;http://blog.rstudio.org/2015/09/29/purrr-0-1-0/&quot;&gt;released&lt;/a&gt; on CRAN
 last week. This package is focused on working with lists (and data
 frames by the same token). However it is not a DSL for lists in the
@@ -607,7 +622,7 @@ tag pages) and it&amp;#39;s easy enough to build the pages locally and push
 the html to your Github repository.&lt;/p&gt;
 
 &lt;!-- 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lisp&quot; data-lang=&quot;lisp&quot;&gt;&lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lisp&quot; data-lang=&quot;lisp&quot;&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;defun&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;neat-R&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;interactive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inferior-R-args&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;--vanilla&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
@@ -617,11 +632,11 @@ the html to your Github repository.&lt;/p&gt;
 &lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;                 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ess-send-input-silently&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;.libPaths(&amp;#39;~/Dropbox/Applications/R&amp;#39;)&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;                 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ess-send-input-silently&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;options(repos = c(CRAN = &amp;#39;http://cran.rstudio.com/&amp;#39;))&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;--&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;nv&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
  --&gt;
 
 &lt;!-- 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; blog_dir &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;~/Dropbox/Projects/Blog/&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; fig_dir &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;assets/figures/&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`_post_path`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; fig_dir_full &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;blog_dir&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; fig_dir&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
@@ -644,7 +659,7 @@ the html to your Github repository.&lt;/p&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   fig.height &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;   dev &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;svg&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;!--&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
  --&gt;
 </description>
       <link>http://lionel-.github.io/2015/10/05/starting-a-blog</link>

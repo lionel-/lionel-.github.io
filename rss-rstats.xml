@@ -5,8 +5,8 @@
 		<description>rstats posts</description>
 		<link>http://lionel-.github.io</link>
 		<atom:link href="http://lionel-.github.io/rss-rstats.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 15 Feb 2016 14:21:32 +0100</lastBuildDate>
-    <pubDate>Mon, 15 Feb 2016 14:21:32 +0100</pubDate>
+    <lastBuildDate>Tue, 27 Sep 2016 13:05:58 +0200</lastBuildDate>
+    <pubDate>Tue, 27 Sep 2016 13:05:58 +0200</pubDate>
 
 		
 			<item>
@@ -404,7 +404,22 @@ doesn&amp;#39;t break anything.&lt;/p&gt;
 		
 			<item>
 				<title>Using purrr with dplyr</title>
-				<description>&lt;p&gt;&lt;code&gt;purrr&lt;/code&gt; was finally
+				<description>&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; Most of the data frame functions in purrr have been
+deprecated in favour of a new family of functions in dplyr. The intent
+is to better separate the responsibilities of packages in the
+tidyverse. First of all &lt;code&gt;map()&lt;/code&gt; now always returns a list. It no
+longer preserves the data frame type. Secondly, all slice- and
+rows-based functions are now deprecated. Mapping a column is now
+handled by the colwise family of dplyr functions,
+e.g. &lt;code&gt;dplyr::mutate_all()&lt;/code&gt;, &lt;code&gt;dplyr::summarise_if()&lt;/code&gt;, etc. Unlike the
+&lt;code&gt;_each()&lt;/code&gt; variants which only accept expressions wrapped in &lt;code&gt;funs()&lt;/code&gt;,
+the new colwise family accepts regular functions as well as additional
+arguments to be passed on. The syntax is thus pretty close to purrr&amp;#39;s:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mtcars &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; group_by&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cyl&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; mutate_all&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;scale&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; center &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;/Update&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;purrr&lt;/code&gt; was finally
 &lt;a href=&quot;http://blog.rstudio.org/2015/09/29/purrr-0-1-0/&quot;&gt;released&lt;/a&gt; on CRAN
 last week. This package is focused on working with lists (and data
 frames by the same token). However it is not a DSL for lists in the
